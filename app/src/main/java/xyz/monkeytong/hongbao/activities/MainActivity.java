@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -23,15 +24,18 @@ import xyz.monkeytong.hongbao.R;
 import xyz.monkeytong.hongbao.fragments.GeneralSettingsFragment;
 import xyz.monkeytong.hongbao.utils.ConnectivityUtil;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
+import xyz.monkeytong.hongbao.widget.CircleImageView;
 
 import com.tencent.bugly.crashreport.CrashReport;
 
 
-public class MainActivity extends Activity implements AccessibilityManager.AccessibilityStateChangeListener {
+public class MainActivity extends Activity implements AccessibilityManager.AccessibilityStateChangeListener{
 
     //开关切换按钮
     private TextView pluginStatusText;
     private ImageView pluginStatusIcon;
+    private  CircleImageView iv;
+    private TextView txt_state;
     //AccessibilityService 管理
     private AccessibilityManager accessibilityManager;
 
@@ -42,7 +46,9 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
         setContentView(R.layout.activity_main);
         pluginStatusText = (TextView) findViewById(R.id.layout_control_accessibility_text);
         pluginStatusIcon = (ImageView) findViewById(R.id.layout_control_accessibility_icon);
-
+        iv= (CircleImageView) findViewById(R.id.iv);
+        txt_state= (TextView) findViewById(R.id.text_state);
+        iv.setBorderWidth(10);
         handleMaterialStatusBar();
 
         explicitlyLoadPreferences();
@@ -158,4 +164,6 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
         }
         return false;
     }
+
+
 }
