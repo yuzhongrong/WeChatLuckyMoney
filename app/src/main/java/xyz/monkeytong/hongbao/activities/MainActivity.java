@@ -12,15 +12,22 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import xyz.monkeytong.hongbao.R;
+import xyz.monkeytong.hongbao.adapter.*;
+import xyz.monkeytong.hongbao.adapter.BaseAdapter;
+import xyz.monkeytong.hongbao.bean.Item;
 import xyz.monkeytong.hongbao.fragments.GeneralSettingsFragment;
 import xyz.monkeytong.hongbao.utils.ConnectivityUtil;
 import xyz.monkeytong.hongbao.utils.UpdateTask;
@@ -29,27 +36,30 @@ import xyz.monkeytong.hongbao.widget.CircleImageView;
 import com.tencent.bugly.crashreport.CrashReport;
 
 
-public class MainActivity extends Activity implements AccessibilityManager.AccessibilityStateChangeListener{
+public class MainActivity extends BaseActivity implements AccessibilityManager.AccessibilityStateChangeListener,View.OnClickListener,BaseAdapter.OnItemClickListener {
 
     //开关切换按钮
-    private TextView pluginStatusText;
-    private ImageView pluginStatusIcon;
+
     private  CircleImageView iv;
     private TextView txt_state;
+    private RecyclerView recyclerView;
     //AccessibilityService 管理
     private AccessibilityManager accessibilityManager;
+    private List<Item> datas=new ArrayList<>();
+    private RecyclerViewAdapter viewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CrashReport.initCrashReport(getApplicationContext(), "900019352", false);
         setContentView(R.layout.activity_main);
-        pluginStatusText = (TextView) findViewById(R.id.layout_control_accessibility_text);
-        pluginStatusIcon = (ImageView) findViewById(R.id.layout_control_accessibility_icon);
         iv= (CircleImageView) findViewById(R.id.iv);
         txt_state= (TextView) findViewById(R.id.text_state);
+        recyclerView= (RecyclerView) findViewById(R.id.frist_recyclerview);
+        initRecycleView();
         iv.setBorderWidth(10);
-        handleMaterialStatusBar();
+        iv.setOnClickListener(this);
+       // handleMaterialStatusBar();
 
         explicitlyLoadPreferences();
 
@@ -58,6 +68,26 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
         accessibilityManager.addAccessibilityStateChangeListener(this);
         updateServiceStatus();
     }
+
+
+    private void initRecycleView(){
+        datas.add(new Item(getString(R.string.settings), R.mipmap.ic_settings));
+        datas.add(new Item(getString(R.string.study), R.mipmap.ic_settings));
+        datas.add(new Item(getString(R.string.share),R.mipmap.ic_settings));
+        datas.add(new Item(getString(R.string.more),R.mipmap.ic_settings));
+
+        viewAdapter=new RecyclerViewAdapter(this,datas);
+        viewAdapter.setOnItemClickListener(this);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,3));
+        recyclerView.addItemDecoration(new DividerGridItemDecoration());
+        recyclerView.setAdapter(viewAdapter);
+
+
+
+    }
+
+
 
     private void explicitlyLoadPreferences() {
         PreferenceManager.setDefaultValues(this, R.xml.general_preferences, false);
@@ -97,9 +127,9 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
         super.onDestroy();
     }
 
-    public void openAccessibility(View view) {
+    public void openAccessibility() {
         try {
-            Toast.makeText(this, "点击「微信红包」" + pluginStatusText.getText(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "点击「微信红包」", Toast.LENGTH_SHORT).show();
             Intent accessibleIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
             startActivity(accessibleIntent);
         } catch (Exception e) {
@@ -109,21 +139,21 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
 
     }
 
-    public void openGitHub(View view) {
+    public void openGitHub() {
         Intent webViewIntent = new Intent(this, WebViewActivity.class);
         webViewIntent.putExtra("title", "GitHub 项目主页");
         webViewIntent.putExtra("url", "https://github.com/geeeeeeeeek/WeChatLuckyMoney");
         startActivity(webViewIntent);
     }
 
-    public void openUber(View view) {
+    public void openUber() {
         Intent webViewIntent = new Intent(this, WebViewActivity.class);
         webViewIntent.putExtra("title", "Uber 优惠乘车机会(优惠码rgk2wue)");
         webViewIntent.putExtra("url", "https://get.uber.com.cn/invite/rgk2wue");
         startActivity(webViewIntent);
     }
 
-    public void openSettings(View view) {
+    public void openSettings() {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         settingsIntent.putExtra("title", "偏好设置");
         settingsIntent.putExtra("frag_id", "GeneralSettingsFragment");
@@ -141,11 +171,10 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
      */
     private void updateServiceStatus() {
         if (isServiceEnabled()) {
-            pluginStatusText.setText(R.string.service_off);
-            pluginStatusIcon.setBackgroundResource(R.mipmap.ic_stop);
+            txt_state.setText(R.string.close_service);
+
         } else {
-            pluginStatusText.setText(R.string.service_on);
-            pluginStatusIcon.setBackgroundResource(R.mipmap.ic_start);
+            txt_state.setText(R.string.start_service);
         }
     }
 
@@ -166,4 +195,46 @@ public class MainActivity extends Activity implements AccessibilityManager.Acces
     }
 
 
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId())
+        {
+
+            case R.id.iv:
+
+                openAccessibility();
+
+                break;
+
+
+
+
+        }
+
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+        switch (position){
+            case 0:
+               openSettings();
+
+                break;
+            case 1:
+                openUber();
+                break;
+            case 2:
+                openGitHub();
+                break;
+            case 3:
+                break;
+
+        }
+
+
+
+    }
 }

@@ -3,6 +3,7 @@ package xyz.monkeytong.hongbao.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,6 +13,9 @@ import android.graphics.Shader;
 import android.graphics.SweepGradient;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 
 import xyz.monkeytong.hongbao.R;
@@ -22,6 +26,7 @@ import xyz.monkeytong.hongbao.R;
 public class CircleImageView extends ImageView {
 
 
+    private static final String TAG = "CircleImageView";
     // 设置外圈的宽度
     private int outCircleWidth;
     // 设置外圈的颜色
@@ -33,6 +38,7 @@ public class CircleImageView extends ImageView {
     private Bitmap image;
     private Paint paintBorder;//背景画笔
     private Shader sweepGradient;
+    private boolean Flag_Selector=false;
 
 
     public CircleImageView(Context context) {
@@ -151,6 +157,9 @@ public class CircleImageView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+
+        Log.d(TAG,"----onDraw()-------->");
+
         //加载图片
         loadBitmap();
 
@@ -198,9 +207,34 @@ public class CircleImageView extends ImageView {
 
     private void loadBitmap() {
         BitmapDrawable bitmapDrawable = (BitmapDrawable) this.getDrawable();
+        if(Flag_Selector==false){
+            if (bitmapDrawable != null){
+                image = bitmapDrawable.getBitmap();
+                Log.d(TAG,"----loadBitmap-------->");
+            }
 
-        if (bitmapDrawable != null){
-            image = bitmapDrawable.getBitmap();
         }
+        else{
+            this.image= BitmapFactory.decodeResource(getResources(),R.drawable.start3);
+        }
+
+    }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        if(event.getAction()==MotionEvent.ACTION_DOWN){
+            Log.d(TAG,"----ACTION_DOWN-------->");
+            Flag_Selector=true;
+             this.invalidate();
+        }else if(event.getAction()==MotionEvent.ACTION_UP){
+            Log.d(TAG,"----ACTION_UP-------->");
+            Flag_Selector=false;
+            this.invalidate();
+        }
+
+
+        return super.onTouchEvent(event);
     }
 }

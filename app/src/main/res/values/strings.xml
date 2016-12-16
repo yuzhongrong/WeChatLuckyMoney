@@ -18,4 +18,9 @@
     <string name="start_service">开启</string>
     <string name="close_service">关闭</string>
 
+    <string name="settings">设置</string>
+    <string name="github">github</string>
+    <string name="share">分享</string>
+    <string name="more">更多</string>
+    <string name="study">教程</string>
 </resources>
