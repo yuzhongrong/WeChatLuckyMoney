@@ -71,10 +71,10 @@ public class MainActivity extends BaseActivity implements AccessibilityManager.A
 
 
     private void initRecycleView(){
-        datas.add(new Item(getString(R.string.settings), R.mipmap.ic_settings));
-        datas.add(new Item(getString(R.string.study), R.mipmap.ic_settings));
-        datas.add(new Item(getString(R.string.share),R.mipmap.ic_settings));
-        datas.add(new Item(getString(R.string.more),R.mipmap.ic_settings));
+        datas.add(new Item(getString(R.string.settings), R.mipmap.settings));
+        datas.add(new Item(getString(R.string.study), R.mipmap.jc));
+        datas.add(new Item(getString(R.string.share),R.mipmap.share));
+
 
         viewAdapter=new RecyclerViewAdapter(this,datas);
         viewAdapter.setOnItemClickListener(this);
