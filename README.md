@@ -50,7 +50,7 @@
 
 ### 应用截图
 
-![608460845](https://cloud.githubusercontent.com/assets/7262715/17330401/4ade682a-58f9-11e6-8b27-3c24941eee24.jpg)
-![805028608](https://cloud.githubusercontent.com/assets/7262715/17330399/4a6b44d0-58f9-11e6-99bf-c2f89d019145.jpg)
-![1627530051](https://cloud.githubusercontent.com/assets/7262715/17330397/4a388946-58f9-11e6-85b6-04b406d27dba.jpg)
+![608460845](https://github.com/yuzhongrong/WeChatLuckyMoney/blob/master/app/src/main/res/mipmap-xxhdpi/screen1.png)
+![805028608](https://github.com/yuzhongrong/WeChatLuckyMoney/blob/master/app/src/main/res/mipmap-xxhdpi/screen2.png)
+
 
