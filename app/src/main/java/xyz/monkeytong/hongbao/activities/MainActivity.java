@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity implements AccessibilityManager.A
     public void openGitHub() {
         Intent webViewIntent = new Intent(this, WebViewActivity.class);
         webViewIntent.putExtra("title", "GitHub 项目主页");
-        webViewIntent.putExtra("url", "https://github.com/geeeeeeeeek/WeChatLuckyMoney");
+        webViewIntent.putExtra("url", "https://github.com/yuzhongrong/WeChatLuckyMoney/blob/master/README.md");
         startActivity(webViewIntent);
     }
 
